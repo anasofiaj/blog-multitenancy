@@ -5,7 +5,7 @@ import com.github.benmanes.caffeine.cache.LoadingCache;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,16 +61,16 @@ public class SchemaBasedMultiTenantConnectionProvider implements MultiTenantConn
     }
 
     @Override
-    public Connection getConnection(String tenantIdentifier) throws SQLException {
+    public Connection getConnection(Object tenantIdentifier) throws SQLException {
         log.info("Get connection for tenant {}", tenantIdentifier);
-        String tenantSchema = tenantSchemas.get(tenantIdentifier);
+        String tenantSchema = tenantSchemas.get(tenantIdentifier.toString());
         final Connection connection = getAnyConnection();
         connection.setSchema(tenantSchema);
         return connection;
     }
 
     @Override
-    public void releaseConnection(String tenantIdentifier, Connection connection) throws SQLException {
+    public void releaseConnection(Object tenantIdentifier, Connection connection) throws SQLException {
         log.info("Release connection for tenant {}", tenantIdentifier);
         connection.setSchema(masterSchema);
         releaseAnyConnection(connection);

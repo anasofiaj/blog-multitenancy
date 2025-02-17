@@ -21,8 +21,8 @@ public class TenantManagementServiceImpl implements TenantManagementService {
 
     private final DataSource dataSource;
     private final JdbcTemplate jdbcTemplate;
-    @Qualifier("tenantLiquibaseProperties")
-    private final LiquibaseProperties liquibaseProperties;
+ //   @Qualifier("tenantLiquibaseProperties")
+  //  private final SpringLiquibase liquibaseProperties;
     private final ResourceLoader resourceLoader;
     private final TenantRepository tenantRepository;
 
@@ -65,23 +65,19 @@ public class TenantManagementServiceImpl implements TenantManagementService {
         liquibase.setResourceLoader(resourceLoader);
         liquibase.setDataSource(dataSource);
         liquibase.setDefaultSchema(schema);
-        if (liquibaseProperties.getParameters() != null) {
-            liquibaseProperties.getParameters().put("schema", schema);
-            liquibase.setChangeLogParameters(liquibaseProperties.getParameters());
-        } else {
-            liquibase.setChangeLogParameters(Collections.singletonMap("schema", schema));
-        }
-        liquibase.setChangeLog(liquibaseProperties.getChangeLog());
-        liquibase.setContexts(liquibaseProperties.getContexts());
-        liquibase.setLiquibaseSchema(liquibaseProperties.getLiquibaseSchema());
-        liquibase.setLiquibaseTablespace(liquibaseProperties.getLiquibaseTablespace());
-        liquibase.setDatabaseChangeLogTable(liquibaseProperties.getDatabaseChangeLogTable());
-        liquibase.setDatabaseChangeLogLockTable(liquibaseProperties.getDatabaseChangeLogLockTable());
-        liquibase.setDropFirst(liquibaseProperties.isDropFirst());
-        liquibase.setShouldRun(liquibaseProperties.isEnabled());
-        liquibase.setLabels(liquibaseProperties.getLabels());
-        liquibase.setRollbackFile(liquibaseProperties.getRollbackFile());
-        liquibase.setTestRollbackOnUpdate(liquibaseProperties.isTestRollbackOnUpdate());
+        liquibase.setLiquibaseSchema(schema);
+
+//        liquibase.setChangeLog(liquibaseProperties.getChangeLog());
+//        liquibase.setContexts(liquibaseProperties.getContexts());
+//        liquibase.setLiquibaseSchema(liquibaseProperties.getLiquibaseSchema());
+//        liquibase.setLiquibaseTablespace(liquibaseProperties.getLiquibaseTablespace());
+//        liquibase.setDatabaseChangeLogTable(liquibaseProperties.getDatabaseChangeLogTable());
+//        liquibase.setDatabaseChangeLogLockTable(liquibaseProperties.getDatabaseChangeLogLockTable());
+//        liquibase.setDropFirst(liquibaseProperties.isDropFirst());
+//     //   liquibase.setShouldRun(liquibaseProperties.isEnabled());
+//        liquibase.setLabels(liquibaseProperties.getLabels());
+//     //   liquibase.setRollbackFile(liquibaseProperties.getRollbackFile());
+//        liquibase.setTestRollbackOnUpdate(liquibaseProperties.isTestRollbackOnUpdate());
         return liquibase;
     }
 }

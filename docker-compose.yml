@@ -1,16 +1,16 @@
-version: '2.1'
 services:
-  postgres:
-    image: postgres
-    ports:
-      - "5432:5432"
+  postgres_2:
+    image: postgres:15
+    container_name: postgres_container_2
     restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: secret
       POSTGRES_DB: master
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d master"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data2:/var/lib/postgresql/data
+
+volumes:
+  postgres_data2:

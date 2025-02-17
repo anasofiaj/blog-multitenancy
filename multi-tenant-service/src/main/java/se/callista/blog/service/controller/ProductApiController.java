@@ -2,8 +2,8 @@ package se.callista.blog.service.controller;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import javax.persistence.EntityNotFoundException;
-import javax.validation.Valid;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -44,9 +44,7 @@ public class ProductApiController {
         }
     }
 
-    @PostMapping(value = "/products",
-                 consumes = {ContentType.PRODUCT_1_0},
-                 produces = {ContentType.PRODUCT_1_0})
+    @PostMapping(value = "/products")
     public ResponseEntity<ProductValue> createProduct(@Valid @RequestBody ProductValue productValue) {
         ProductValue product = productService.createProduct(productValue);
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<>();

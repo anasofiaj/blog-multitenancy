@@ -2,8 +2,7 @@ package se.callista.blog.service.multitenancy.config.tenant;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.persistence.EntityManagerFactory;
-import org.hibernate.MultiTenancyStrategy;
+import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.context.spi.CurrentTenantIdentifierResolver;
 import org.hibernate.engine.jdbc.connections.spi.MultiTenantConnectionProvider;
@@ -58,11 +57,11 @@ public class TenantPersistenceConfig {
         emfBean.setJpaVendorAdapter(vendorAdapter);
 
         Map<String, Object> properties = new HashMap<>(this.jpaProperties.getProperties());
-        properties.put(AvailableSettings.PHYSICAL_NAMING_STRATEGY, "org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy");
+        properties.put(AvailableSettings.PHYSICAL_NAMING_STRATEGY, "org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy");
         properties.put(AvailableSettings.IMPLICIT_NAMING_STRATEGY, "org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy");
         properties.put(AvailableSettings.BEAN_CONTAINER, new SpringBeanContainer(this.beanFactory));
         properties.remove(AvailableSettings.DEFAULT_SCHEMA);
-        properties.put(AvailableSettings.MULTI_TENANT, MultiTenancyStrategy.SCHEMA);
+       // properties.put(AvailableSettings.MULTI_TENANT, MultiTenancyStrategy.SCHEMA);
         properties.put(AvailableSettings.MULTI_TENANT_CONNECTION_PROVIDER, connectionProvider);
         properties.put(AvailableSettings.MULTI_TENANT_IDENTIFIER_RESOLVER, tenantResolver);
         emfBean.setJpaPropertyMap(properties);

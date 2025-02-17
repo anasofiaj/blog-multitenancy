@@ -2,7 +2,7 @@ package se.callista.blog.service.multitenancy.config.master;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.cfg.AvailableSettings;
@@ -46,7 +46,7 @@ public class MasterPersistenceConfig {
         em.setJpaVendorAdapter(vendorAdapter);
 
         Map<String, Object> properties = new HashMap<>(this.jpaProperties.getProperties());
-        properties.put(AvailableSettings.PHYSICAL_NAMING_STRATEGY, "org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy");
+        properties.put(AvailableSettings.PHYSICAL_NAMING_STRATEGY, "org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy");
         properties.put(AvailableSettings.IMPLICIT_NAMING_STRATEGY, "org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy");
         properties.put(AvailableSettings.BEAN_CONTAINER, new SpringBeanContainer(this.beanFactory));
         em.setJpaPropertyMap(properties);

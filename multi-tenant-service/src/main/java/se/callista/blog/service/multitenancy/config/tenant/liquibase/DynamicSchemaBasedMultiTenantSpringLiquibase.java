@@ -32,7 +32,7 @@ public class DynamicSchemaBasedMultiTenantSpringLiquibase implements Initializin
     private final DataSource dataSource;
 
     @Qualifier("tenantLiquibaseProperties")
-    private final LiquibaseProperties liquibaseProperties;
+    private final SpringLiquibase liquibaseProperties;
 
     private ResourceLoader resourceLoader;
 
@@ -56,12 +56,8 @@ public class DynamicSchemaBasedMultiTenantSpringLiquibase implements Initializin
         liquibase.setResourceLoader(getResourceLoader());
         liquibase.setDataSource(dataSource);
         liquibase.setDefaultSchema(schema);
-        if (liquibaseProperties.getParameters() != null) {
-            liquibaseProperties.getParameters().put("schema", schema);
-            liquibase.setChangeLogParameters(liquibaseProperties.getParameters());
-        } else {
-            liquibase.setChangeLogParameters(Collections.singletonMap("schema", schema));
-        }
+
+        liquibase.setLiquibaseSchema(schema);
         liquibase.setChangeLog(liquibaseProperties.getChangeLog());
         liquibase.setContexts(liquibaseProperties.getContexts());
         liquibase.setLiquibaseSchema(liquibaseProperties.getLiquibaseSchema());
@@ -69,9 +65,9 @@ public class DynamicSchemaBasedMultiTenantSpringLiquibase implements Initializin
         liquibase.setDatabaseChangeLogTable(liquibaseProperties.getDatabaseChangeLogTable());
         liquibase.setDatabaseChangeLogLockTable(liquibaseProperties.getDatabaseChangeLogLockTable());
         liquibase.setDropFirst(liquibaseProperties.isDropFirst());
-        liquibase.setShouldRun(liquibaseProperties.isEnabled());
+        //liquibase.setShouldRun(liquibaseProperties.isEnabled());
         liquibase.setLabels(liquibaseProperties.getLabels());
-        liquibase.setRollbackFile(liquibaseProperties.getRollbackFile());
+//        liquibase.setRollbackFile(liquibaseProperties.getRollbackFile());
         liquibase.setTestRollbackOnUpdate(liquibaseProperties.isTestRollbackOnUpdate());
         return liquibase;
     }

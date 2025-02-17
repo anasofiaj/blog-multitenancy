@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 
 @Lazy(false)
-@Configuration
+//@Configuration
 @ConditionalOnProperty(name = "multitenancy.master.liquibase.enabled", havingValue = "true", matchIfMissing = true)
 public class LiquibaseConfig {
 
@@ -21,19 +21,22 @@ public class LiquibaseConfig {
 
     @Bean
     @ConfigurationProperties("multitenancy.master.liquibase")
-    public LiquibaseProperties masterLiquibaseProperties() {
-        return new LiquibaseProperties();
+    public SpringLiquibase masterLiquibaseProperties() {
+        return new SpringLiquibase();
     }
 
     @Bean
     @ConfigurationProperties("multitenancy.tenant.liquibase")
-    public LiquibaseProperties tenantLiquibaseProperties() {
-        return new LiquibaseProperties();
+    public SpringLiquibase tenantLiquibaseProperties(DataSource dataSource) {
+        SpringLiquibase liquibase = new SpringLiquibase();
+        liquibase.setChangeLog("classpath:db/changelog/db.changelog-tenant.yaml");
+        liquibase.setDataSource(dataSource);
+        return new SpringLiquibase();
     }
 
     @Bean
     public SpringLiquibase liquibase(ObjectProvider<DataSource> liquibaseDataSource) {
-        LiquibaseProperties liquibaseProperties = masterLiquibaseProperties();
+        SpringLiquibase liquibaseProperties = masterLiquibaseProperties();
         SpringLiquibase liquibase = new SpringLiquibase();
         liquibase.setDefaultSchema(this.masterSchema);
         liquibase.setDataSource(liquibaseDataSource.getIfAvailable());
@@ -44,10 +47,10 @@ public class LiquibaseConfig {
         liquibase.setDatabaseChangeLogTable(liquibaseProperties.getDatabaseChangeLogTable());
         liquibase.setDatabaseChangeLogLockTable(liquibaseProperties.getDatabaseChangeLogLockTable());
         liquibase.setDropFirst(liquibaseProperties.isDropFirst());
-        liquibase.setShouldRun(liquibaseProperties.isEnabled());
+        //liquibase.setShouldRun(liquibaseProperties.isEnabled());
         liquibase.setLabels(liquibaseProperties.getLabels());
-        liquibase.setChangeLogParameters(liquibaseProperties.getParameters());
-        liquibase.setRollbackFile(liquibaseProperties.getRollbackFile());
+        //liquibase.setChangeLogParameters(liquibaseProperties.getParameters());
+        //liquibase.setRollbackFile(liquibaseProperties.getRollbackFile());
         liquibase.setTestRollbackOnUpdate(liquibaseProperties.isTestRollbackOnUpdate());
         return liquibase;
     }
